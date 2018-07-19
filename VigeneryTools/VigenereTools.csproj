@@ -7,8 +7,8 @@
     <ProjectGuid>{1162EBD9-7DFA-4AE1-9F5D-75452321DAFF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VigeneryTools</RootNamespace>
-    <AssemblyName>VigeneryTools</AssemblyName>
+    <RootNamespace>VigenereTools</RootNamespace>
+    <AssemblyName>VigenereTools</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
