@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CaesarCipher.cs" />
+    <Compile Include="CipherException.cs" />
     <Compile Include="ICaesarCipher.cs" />
     <Compile Include="IVigenereCipher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
