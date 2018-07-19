@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace VigeneryTools
+namespace VigenereTools
 {
     public class CaesarCipher : ICaesarCipher
     {

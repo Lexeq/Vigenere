@@ -1,4 +1,4 @@
-﻿namespace VigeneryTools
+﻿namespace VigenereTools
 {
     public interface ICaesarCipher
     {
