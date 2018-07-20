@@ -31,7 +31,11 @@ namespace VigenereTools
 
             foreach (var ch in text)
             {
-                var x = alphabet[(Array.IndexOf(alphabet, ch) - (shift % alphabet.Length) + alphabet.Length) % alphabet.Length];
+                var chPosition = Array.IndexOf(alphabet, ch);
+                if (chPosition < 0)
+                    throw new CipherException($"Unexpectable character {ch}");
+
+                var x = alphabet[(chPosition - (shift % alphabet.Length) + alphabet.Length) % alphabet.Length];
                 builder.Append(x);
             }
             return builder.ToString();
@@ -48,7 +52,11 @@ namespace VigenereTools
 
             foreach (var ch in text)
             {
-                var x = alphabet[(Array.IndexOf(alphabet, ch) + shift) % alphabet.Length];
+                var chPosition = Array.IndexOf(alphabet, ch);
+                if (chPosition < 0)
+                    throw new CipherException($"Unexpectable character {ch}");
+
+                var x = alphabet[(chPosition + shift) % alphabet.Length];
                 builder.Append(x);
             }
             return builder.ToString();

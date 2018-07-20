@@ -46,7 +46,7 @@ namespace VigenereToolsTests
             const string text = "abcd5fg";
             const int shift = 0;
 
-            Assert.ThrowsException<Exception>(()=>caesar.Encrypt(text, shift));
+            Assert.ThrowsException<CipherException>(()=>caesar.Encrypt(text, shift));
         }
     }
 }
