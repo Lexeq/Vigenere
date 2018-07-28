@@ -3,7 +3,7 @@ using System;
 
 namespace VigenereTools
 {
-    internal class LatinCaesarCipher : ICaesarCipher
+    public class LatinCaesarCipher : ICaesarCipher
     {
         private const int AlphabetSize = 26;
 
