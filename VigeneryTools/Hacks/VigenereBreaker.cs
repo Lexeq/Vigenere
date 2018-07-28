@@ -6,31 +6,37 @@ namespace VigenereTools.Hacks
 {
     public class VigenereBreaker
     {
+        public VigenereBreaker English
+        {
+            get
+            {
+                return new VigenereBreaker(new LatinCaesarCipher(), CaesarBreaker.EnglishBreaker, 0.0644);
+            }
+        }
+
         private ICaesarBreaker caesarBreaker;
 
         private ICaesarCipher caesarCipher;
 
-        private const double StandartIndexOfCoincidence = 0.0644;
+        private readonly double StandartIndexOfCoincidence;
 
         private const double StandartKeyLengthCoeff = 0.008;
 
         public double KeyLengthCoeff { get; set; }
 
-        private readonly char[] alphabet;
-
-        public VigenereBreaker()
+        internal VigenereBreaker(ICaesarCipher cCipher, ICaesarBreaker cBreaker, double ioc)
         {
             KeyLengthCoeff = StandartKeyLengthCoeff;
-            alphabet = Enumerable.Range(97, 26).Select(x => (char)x).ToArray();
-            caesarBreaker = CaesarBreaker.EnglishBreaker;
-            caesarCipher = new CaesarCipher(alphabet);
+            caesarBreaker = cBreaker;
+            caesarCipher = cCipher;
+            StandartIndexOfCoincidence = ioc;
         }
 
-        private int FindKeyLength(string message, int minKeyLength, int maxKeyLength)
+        private int TryFindKeyLength(string message, int minKeyLength, int maxKeyLength)
         {
             for (int k = minKeyLength; k < maxKeyLength; k++)
             {
-                var ic = GetIndexOfCoincidence(message, alphabet, k);
+                var ic = GetIndexOfCoincidence(message, caesarBreaker.Alphabet, k);
                 if (Math.Abs(StandartIndexOfCoincidence - ic) <= KeyLengthCoeff)
                     return k;
             }
@@ -81,7 +87,7 @@ namespace VigenereTools.Hacks
 
         public string TryFindKey(string input)
         {
-            return TryFindKey(input, FindKeyLength(input, 1, input.Length));
+            return TryFindKey(input, TryFindKeyLength(input, 1, input.Length));
         }
 
         public string TryFindKey(string input, int keyLength)
@@ -93,8 +99,7 @@ namespace VigenereTools.Hacks
             {
                 var offset = caesarBreaker.GetShift(pts[i]);
 
-                var x = (char)('a' + ((26 - offset) % 26));
-                var y = caesarCipher.Decrypt("a", -offset);
+                var y = caesarCipher.Decrypt("a", offset);
                 builder.Append(y);
             }
             return builder.ToString();
