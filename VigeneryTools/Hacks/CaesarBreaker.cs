@@ -81,14 +81,16 @@ namespace VigenereTools.Hacks
             if (text == null)
                 throw new ArgumentNullException(nameof(text));
 
+            var alphabetSize = standartFrequency.Keys.Count;
+
             var currentFreq = text.GroupBy(x => x).ToDictionary(x => x.Key, x => x.Count() / (double)text.Length);
-            int[] shifts = new int[26];
+            int[] shifts = new int[alphabetSize];
             foreach (var standart in standartFrequency)
             {
                 foreach (var current in currentFreq)
                 {
                     if (Math.Abs(standart.Value - current.Value) < MaxDeviation)
-                        shifts[(current.Key - standart.Key + 26) % 26]++;
+                        shifts[(current.Key - standart.Key + alphabetSize) % alphabetSize]++;
                 }
             }
             var shift = shifts.Select((x, i) => new { Value = x, Index = i }).OrderBy(x => x.Value).Last().Index;
