@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VigenereTools
 {
-    interface IVigenereCipher
+    public interface IVigenereCipher
     {
         string Encrypt(string text, string key);
 
