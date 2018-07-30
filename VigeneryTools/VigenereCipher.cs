@@ -13,6 +13,11 @@ namespace VigenereTools
             caesar = new CaesarCipher(alphabet);
         }
 
+        public VigenereCipher(ICaesarCipher caesar)
+        {
+            this.caesar = caesar;
+        }
+
         public string Decrypt(string text, string key)
         {
             if (text == null)
