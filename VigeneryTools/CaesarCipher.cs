@@ -33,39 +33,32 @@ namespace VigenereTools
         {
             if (text == null)
                 throw new ArgumentException(nameof(text));
-            if (shift < 0)
-                throw new ArgumentException("Shift must be positive number.", nameof(shift));
 
-            StringBuilder builder = new StringBuilder(text.Length);
-
-            foreach (var ch in text)
+            try
             {
-                var chPosition = Array.IndexOf(alphabet, ch);
-                if (chPosition < 0)
-                    throw new CipherException($"Unexpectable character {ch}");
-
-                var x = alphabet[(chPosition - (shift % alphabet.Length) + alphabet.Length) % alphabet.Length];
-                builder.Append(x);
+               return Encrypt(text, -shift);
             }
-            return builder.ToString();
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public string Encrypt(string text, int shift)
         {
             if (text == null)
                 throw new ArgumentException(nameof(text));
-            if (shift < 0)
-                throw new ArgumentException("Shift must be positive number.", nameof(shift));
+
+            shift %= alphabet.Length;
 
             StringBuilder builder = new StringBuilder(text.Length);
-
             foreach (var ch in text)
             {
                 var chPosition = Array.IndexOf(alphabet, ch);
                 if (chPosition < 0)
                     throw new CipherException($"Unexpectable character {ch}");
 
-                var x = alphabet[(chPosition + shift) % alphabet.Length];
+                var x = alphabet[(alphabet.Length + chPosition + shift) % alphabet.Length];
                 builder.Append(x);
             }
             return builder.ToString();
