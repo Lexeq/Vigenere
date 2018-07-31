@@ -23,8 +23,14 @@ namespace VigenereTools
         {
             if (text == null)
                 throw new ArgumentNullException(nameof(text));
-
-            return Encrypt(text, -shift);
+            try
+            {
+                return Encrypt(text, -shift);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public string Encrypt(string text, int shift)
@@ -37,6 +43,9 @@ namespace VigenereTools
 
             foreach (var ch in text)
             {
+                if (ch < 'a' || ch > 'z')
+                    throw new CipherException($"Unexpectable char: {ch}");
+
                 var x = 'a' + (AlphabetSize + shift + ch - 'a') % AlphabetSize;
                 builder.Append((char)x);
             }
