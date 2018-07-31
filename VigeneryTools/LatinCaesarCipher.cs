@@ -1,11 +1,23 @@
 ﻿using System.Text;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace VigenereTools
 {
     public class LatinCaesarCipher : ICaesarCipher
     {
         private const int AlphabetSize = 26;
+
+        private static readonly char[] alphabet = Enumerable.Range('a', AlphabetSize).Select(x => (char)x).ToArray();
+
+        public IReadOnlyCollection<char> Alphabet
+        {
+            get
+            {
+                return Array.AsReadOnly(alphabet);
+            }
+        }
 
         public string Decrypt(string text, int shift)
         {

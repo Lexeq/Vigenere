@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -7,6 +8,14 @@ namespace VigenereTools
     public class CaesarCipher : ICaesarCipher
     {
         private char[] alphabet;
+
+        public IReadOnlyCollection<char> Alphabet
+        {
+            get
+            {
+                return Array.AsReadOnly(alphabet);
+            }
+        }
 
         public CaesarCipher(char[] alphabet)
         {
