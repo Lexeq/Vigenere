@@ -12,6 +12,8 @@ namespace VigenereTools
                 throw new ArgumentNullException(nameof(str));
             if (parts <= 0)
                 throw new ArgumentException("Parts count must be positive number.", nameof(parts));
+            if (parts == 1)
+                return new string[1] { str };
 
             string[] result = new string[parts];
 
@@ -30,6 +32,9 @@ namespace VigenereTools
 
         public static string Merge(this string[] strings)
         {
+            if (strings == null)
+                throw new ArgumentNullException(nameof(strings));
+
             var maxLength = strings.Max(s => s.Length);
             StringBuilder builder = new StringBuilder();
 
