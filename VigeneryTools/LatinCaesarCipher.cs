@@ -21,8 +21,6 @@ namespace VigenereTools
 
         public string Decrypt(string text, int shift)
         {
-            if (text == null)
-                throw new ArgumentNullException(nameof(text));
             try
             {
                 return Encrypt(text, -shift);
