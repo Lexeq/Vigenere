@@ -10,7 +10,9 @@ namespace VigenereTools.Hacks
         {
             get
             {
-                return new VigenereBreaker(new LatinCaesarCipher(), CaesarBreaker.EnglishBreaker, 0.0644);
+                var v = new VigenereBreaker(CaesarBreaker.EnglishBreaker, 0.0644);
+                v.caesarCipher = new LatinCaesarCipher();
+                return v;
             }
         }
 
@@ -24,13 +26,21 @@ namespace VigenereTools.Hacks
 
         public double KeyLengthCoeff { get; set; }
 
-        internal VigenereBreaker(ICaesarCipher cCipher, ICaesarBreaker cBreaker, double ioc)
+        internal VigenereBreaker(ICaesarBreaker cBreaker, double ioc)
+        {
+            KeyLengthCoeff = StandartKeyLengthCoeff;
+            caesarBreaker = cBreaker;
+            caesarCipher = new CaesarCipher(cBreaker.Alphabet);
+            StandartIndexOfCoincidence = ioc;
+        }
+
+   /*     internal VigenereBreaker(ICaesarCipher cCipher, ICaesarBreaker cBreaker, double ioc)
         {
             KeyLengthCoeff = StandartKeyLengthCoeff;
             caesarBreaker = cBreaker;
             caesarCipher = cCipher;
             StandartIndexOfCoincidence = ioc;
-        }
+        }*/
 
         private int TryFindKeyLength(string message, int minKeyLength, int maxKeyLength)
         {
