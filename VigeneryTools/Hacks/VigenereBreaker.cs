@@ -81,7 +81,7 @@ namespace VigenereTools.Hacks
             {
                 var offset = caesarBreaker.GetShift(parts[i]);
 
-                var y = caesarCipher.Decrypt(caesarCipher.Alphabet.First().ToString() , offset);
+                var y = caesarCipher.Encrypt(caesarCipher.Alphabet.First().ToString() , offset);
                 builder.Append(y);
             }
             return builder.ToString();
