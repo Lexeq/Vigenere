@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace VigenereTools.Hacks
 {
-    internal class CaesarBreaker : ICaesarBreaker
+    internal class CaesarBreaker
     {
         #region Static
         private const double DefaultDeviation = 0.06;
 
-        public static ICaesarBreaker EnglishBreaker
+        public static CaesarBreaker EnglishBreaker
         {
             get
             {
@@ -70,7 +70,7 @@ namespace VigenereTools.Hacks
             }
         }
 
-        public CaesarBreaker(IDictionary<char, double> frequency)
+        private CaesarBreaker(IDictionary<char, double> frequency)
         {
             standartFrequency = frequency ?? throw new ArgumentNullException(nameof(frequency));
             MaxDeviation = DefaultDeviation;
@@ -80,6 +80,9 @@ namespace VigenereTools.Hacks
         {
             if (text == null)
                 throw new ArgumentNullException(nameof(text));
+
+            if (text.Length == 0)
+                return 0;
 
             var alphabetSize = standartFrequency.Keys.Count;
 

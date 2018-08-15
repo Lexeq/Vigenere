@@ -15,13 +15,19 @@ namespace VigenereTools.Hacks
 
         private readonly double StandartIndexOfCoincidence;
 
-        private ICaesarBreaker caesarBreaker;
+        private CaesarBreaker caesarBreaker;
 
         private ICaesarCipher caesarCipher;
 
         public double MaxIocDeviation { get; set; }
 
-        internal VigenereBreaker(ICaesarCipher cCipher, ICaesarBreaker cBreaker, double ioc)
+        public double MaxCaesarDeviation
+        {
+            get { return caesarBreaker.MaxDeviation; }
+            set { caesarBreaker.MaxDeviation = value; }
+        }
+
+        private VigenereBreaker(ICaesarCipher cCipher, CaesarBreaker cBreaker, double ioc)
         {
             MaxIocDeviation = DefaultIocDeviation;
             caesarBreaker = cBreaker;
@@ -74,6 +80,11 @@ namespace VigenereTools.Hacks
 
         public string TryFindKey(string input, int keyLength)
         {
+            if (keyLength < 1)
+                throw new ArgumentException("Value must be positive number", nameof(keyLength));
+            if (input == null)
+                throw new ArgumentNullException(input);
+
             var parts = input.Cut(keyLength);
 
             StringBuilder builder = new StringBuilder(keyLength);

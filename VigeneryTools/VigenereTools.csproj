@@ -43,7 +43,6 @@
     <Compile Include="CaesarCipher.cs" />
     <Compile Include="CipherException.cs" />
     <Compile Include="Hacks\CaesarBreaker.cs" />
-    <Compile Include="Hacks\ICaesarBreaker.cs" />
     <Compile Include="Hacks\VigenereBreaker.cs" />
     <Compile Include="ICaesarCipher.cs" />
     <Compile Include="IVigenereCipher.cs" />
