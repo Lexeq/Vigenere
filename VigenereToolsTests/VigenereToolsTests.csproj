@@ -49,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CaesarCipherTest.cs" />
+    <Compile Include="PrivateTypeExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringExtTest.cs" />
     <Compile Include="VigenereCipherTest.cs" />
   </ItemGroup>
   <ItemGroup>

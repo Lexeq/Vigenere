@@ -1,0 +1,88 @@
+﻿using System;
+using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace VigenereToolsTests
+{
+    [TestClass]
+    public class StringExtTest
+    {
+        PrivateType pt;
+
+        [TestInitialize]
+        public void StringExtTestInitialize()
+        {
+            pt = new PrivateType("VigenereTools", "VigenereTools.StringExtensions");
+        }
+
+        [TestMethod]
+        public void SplitNullStringTest()
+        {
+            string text = null;
+            int parts = 3;
+
+            var func = new Func<string[]>(() => (string[])pt.InvokeStaticExt("Cut", new object[2] { text, parts }));
+
+            Assert.ThrowsException<ArgumentNullException>(func);
+        }
+
+        [TestMethod]
+        public void SplitEmrtyStringTest()
+        {
+            string text = string.Empty;
+            int parts = 3;
+
+            var actual = (string[])pt.InvokeStaticExt("Cut", new object[2] { text, parts });
+            var expected = new[] { "", "", "" };
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SplitIntoZeorPartsTest()
+        {
+            string text = "teststring";
+            int parts = 0;
+
+            var func = new Func<string[]>(() => (string[])pt.InvokeStaticExt("Cut", new object[2] { text, parts }));
+
+            Assert.ThrowsException<ArgumentException>(func);
+        }
+
+        [TestMethod]
+        public void SplitIntoNegativePartsCountTest()
+        {
+            string text = "teststring";
+            int parts = -3;
+
+            var func = new Func<string[]>(() => (string[])pt.InvokeStaticExt("Cut", new object[2] { text, parts }));
+
+            Assert.ThrowsException<ArgumentException>(func);
+        }
+
+        [TestMethod]
+        public void SplitIntoPartsCountMoreThenTextLengthTest()
+        {
+            string text = "abc";
+            int parts = 5;
+
+            var actual = (string[])pt.InvokeStaticExt("Cut", new object[2] { text, parts });
+            var expected = new[] { "a", "b", "c", "", "" };
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SplitTest()
+        {
+            string text = "abc1abc2abc3ab";
+            int parts = 4;
+
+            var expected = new[] { "aaaa", "bbbb", "ccc", "123" };
+            var actual = (string[])pt.InvokeStaticExt("Cut",  text, parts );
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+    }
+}
