@@ -34,6 +34,8 @@ namespace VigenereTools
         {
             if (strings == null)
                 throw new ArgumentNullException(nameof(strings));
+            if (strings.Length == 0)
+                return string.Empty;
 
             var maxLength = strings.Max(s => s.Length);
             StringBuilder builder = new StringBuilder();
