@@ -57,7 +57,7 @@ namespace VigenereTools.Hacks
             if (keyLength == 1)
                 return GetIndexOfCoincidence(text);
 
-            var parts = text.Cut(keyLength);
+            var parts = text.Split(keyLength);
             return parts.Select(x => GetIndexOfCoincidence(x)).Average();
         }
 
@@ -85,7 +85,7 @@ namespace VigenereTools.Hacks
             if (input == null)
                 throw new ArgumentNullException(input);
 
-            var parts = input.Cut(keyLength);
+            var parts = input.Split(keyLength);
 
             StringBuilder builder = new StringBuilder(keyLength);
             for (int i = 0; i < keyLength; i++)

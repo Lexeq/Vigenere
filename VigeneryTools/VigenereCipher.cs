@@ -26,7 +26,7 @@ namespace VigenereTools
                 throw new ArgumentNullException(nameof(key));
 
             int partsCount = Math.Min(key.Length, text.Length);
-            var parts = text.Cut(partsCount);
+            var parts = text.Split(partsCount);
             string[] decrypted = new string[partsCount];
             for (int i = 0; i < parts.Length; i++)
             {
@@ -43,7 +43,7 @@ namespace VigenereTools
                 throw new ArgumentNullException(nameof(key));
 
             int partsCounts = Math.Min(key.Length, text.Length);
-            var parts = text.Cut(partsCounts);
+            var parts = text.Split(partsCounts);
             string[] encrypted = new string[partsCounts];
             for (int i = 0; i < parts.Length; i++)
             {
