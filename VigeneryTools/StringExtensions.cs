@@ -6,7 +6,7 @@ namespace VigenereTools
 {
     static class StringExtensions
     {
-        public static string[] Cut(this string str, int parts)
+        public static string[] Split(this string str, int parts)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
