@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VigenereToolsTests
@@ -22,7 +21,7 @@ namespace VigenereToolsTests
             string text = null;
             int parts = 3;
 
-            var func = new Func<string[]>(() => (string[])stringExtensions.InvokeStaticExt("Cut", new object[2] { text, parts }));
+            var func = new Func<string[]>(() => (string[])stringExtensions.InvokeStaticExt("Split", new object[2] { text, parts }));
 
             Assert.ThrowsException<ArgumentNullException>(func);
         }
@@ -33,7 +32,7 @@ namespace VigenereToolsTests
             string text = string.Empty;
             int parts = 3;
 
-            var actual = (string[])stringExtensions.InvokeStaticExt("Cut", new object[2] { text, parts });
+            var actual = (string[])stringExtensions.InvokeStaticExt("Split", new object[2] { text, parts });
             var expected = new[] { "", "", "" };
 
             CollectionAssert.AreEqual(expected, actual);
@@ -45,7 +44,7 @@ namespace VigenereToolsTests
             string text = "teststring";
             int parts = 0;
 
-            var func = new Func<string[]>(() => (string[])stringExtensions.InvokeStaticExt("Cut", new object[2] { text, parts }));
+            var func = new Func<string[]>(() => (string[])stringExtensions.InvokeStaticExt("Split", new object[2] { text, parts }));
 
             Assert.ThrowsException<ArgumentException>(func);
         }
@@ -56,7 +55,7 @@ namespace VigenereToolsTests
             string text = "teststring";
             int parts = -3;
 
-            var func = new Func<string[]>(() => (string[])stringExtensions.InvokeStaticExt("Cut", new object[2] { text, parts }));
+            var func = new Func<string[]>(() => (string[])stringExtensions.InvokeStaticExt("Split", new object[2] { text, parts }));
 
             Assert.ThrowsException<ArgumentException>(func);
         }
@@ -67,7 +66,7 @@ namespace VigenereToolsTests
             string text = "abc";
             int parts = 5;
 
-            var actual = (string[])stringExtensions.InvokeStaticExt("Cut", new object[2] { text, parts });
+            var actual = (string[])stringExtensions.InvokeStaticExt("Split", new object[2] { text, parts });
             var expected = new[] { "a", "b", "c", "", "" };
 
             CollectionAssert.AreEqual(expected, actual);
@@ -80,7 +79,7 @@ namespace VigenereToolsTests
             int parts = 4;
 
             var expected = new[] { "aaaa", "bbbb", "ccc", "123" };
-            var actual = (string[])stringExtensions.InvokeStaticExt("Cut", text, parts);
+            var actual = (string[])stringExtensions.InvokeStaticExt("Split", text, parts);
 
             CollectionAssert.AreEqual(expected, actual);
         }
