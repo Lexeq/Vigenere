@@ -34,13 +34,61 @@ namespace VigenereToolsTests
         [TestMethod]
         public void DecryptTest()
         {
-            const string text = "lxfopvefrnhr"; 
+            const string text = "lxfopvefrnhr";
             const string key = "lemon";
             const string expected = "attackatdawn";
 
             var result = cipher.Decrypt(text, key);
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void EncryptWithEmptyKeyTest()
+        {
+            var text = "aaaaa";
+            var key = "";
+
+            Assert.AreEqual(text, cipher.Encrypt(text, key));
+        }
+
+        [TestMethod]
+        public void EncryptEmptyStringTest()
+        {
+            var text = "";
+            var key = "test";
+
+            Assert.AreEqual(text, cipher.Encrypt(text, key));
+        }
+
+        [TestMethod]
+        public void EncryptNullStringTest()
+        {
+            string text = null;
+            var key = "test";
+
+            Assert.ThrowsException<ArgumentNullException>(() => cipher.Encrypt(text, key));
+        }
+
+        [TestMethod]
+        public void EncryptWithNullKeyTest()
+        {
+            string text = "abc";
+            string key = null;
+
+            Assert.ThrowsException<ArgumentNullException>(() => cipher.Encrypt(text, key));
+        }
+
+        [TestMethod]
+        public void EncryptWithLongKey()
+        {
+            string text = "abc";
+            string key = "thiskeylengthmorethentextlength";
+
+            var expected = "tik";
+            var actual = cipher.Encrypt(text, key);
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }

@@ -133,9 +133,10 @@ namespace VigenereToolsTests
         {
             var parts = new string[] { };
 
-            var func = new Func<string>(() => (string)stringExtensions.InvokeStaticExt("Merge", new object[] { parts }));
+            var actualc = (string)stringExtensions.InvokeStaticExt("Merge", new object[] { parts });
+            var expected = string.Empty;
 
-            Assert.ThrowsException<ArgumentException>(func);
+            Assert.AreEqual(expected, actualc);
         }
 
         [TestMethod]
