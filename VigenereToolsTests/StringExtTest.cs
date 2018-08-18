@@ -44,9 +44,10 @@ namespace VigenereToolsTests
             string text = "teststring";
             int parts = 0;
 
-            var func = new Func<string[]>(() => (string[])stringExtensions.InvokeStaticExt("Split", new object[2] { text, parts }));
+            var actual = (string[])stringExtensions.InvokeStaticExt("Split", new object[2] { text, parts });
+            var expected = new string[0];
 
-            Assert.ThrowsException<ArgumentException>(func);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
