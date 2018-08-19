@@ -24,6 +24,8 @@ namespace VigenereTools
                 throw new ArgumentNullException(nameof(text));
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
+            if (key.Length < 1)
+                throw new ArgumentException("Key must contains at least one character.", nameof(key));
 
             int partsCount = Math.Min(key.Length, text.Length);
             var parts = text.Split(partsCount);
@@ -41,6 +43,8 @@ namespace VigenereTools
                 throw new ArgumentNullException(nameof(text));
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
+            if (key.Length < 1)
+                throw new ArgumentException("Key must contains at least one character.", nameof(key));
 
             int partsCounts = Math.Min(key.Length, text.Length);
             var parts = text.Split(partsCounts);

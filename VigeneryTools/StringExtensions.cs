@@ -10,7 +10,7 @@ namespace VigenereTools
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
-            if (parts <= 0)
+            if (parts < 0)
                 throw new ArgumentException("Parts count must be positive number.", nameof(parts));
             if (parts == 1)
                 return new string[1] { str };

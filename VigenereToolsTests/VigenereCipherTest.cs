@@ -19,6 +19,7 @@ namespace VigenereToolsTests
             cipher = new VigenereCipher(Enumerable.Range('a', 26).Select(x => (char)x).ToArray());
         }
 
+        #region EncryptTests
         [TestMethod]
         public void EncryptTest()
         {
@@ -32,24 +33,12 @@ namespace VigenereToolsTests
         }
 
         [TestMethod]
-        public void DecryptTest()
-        {
-            const string text = "lxfopvefrnhr";
-            const string key = "lemon";
-            const string expected = "attackatdawn";
-
-            var result = cipher.Decrypt(text, key);
-
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
         public void EncryptWithEmptyKeyTest()
         {
             var text = "aaaaa";
             var key = "";
 
-            Assert.AreEqual(text, cipher.Encrypt(text, key));
+            Assert.ThrowsException<ArgumentException>(()=>cipher.Encrypt(text, key));
         }
 
         [TestMethod]
@@ -90,5 +79,68 @@ namespace VigenereToolsTests
 
             Assert.AreEqual(expected, actual);
         }
+        #endregion
+
+        #region DecryptTests
+        [TestMethod]
+        public void DecryptTest()
+        {
+            const string text = "lxfopvefrnhr";
+            const string key = "lemon";
+            const string expected = "attackatdawn";
+
+            var result = cipher.Decrypt(text, key);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void DecryptWithEmptyKeyTest()
+        {
+            var text = "aaaaa";
+            var key = "";
+
+            Assert.ThrowsException<ArgumentException>(() => cipher.Decrypt(text, key));
+        }
+
+        [TestMethod]
+        public void DecryptEmptyStringTest()
+        {
+            var text = "";
+            var key = "test";
+
+            Assert.AreEqual(text, cipher.Decrypt(text, key));
+        }
+
+        [TestMethod]
+        public void DecryptNullStringTest()
+        {
+            string text = null;
+            var key = "test";
+
+            Assert.ThrowsException<ArgumentNullException>(() => cipher.Decrypt(text, key));
+        }
+
+        [TestMethod]
+        public void DecryptWithNullKeyTest()
+        {
+            string text = "abc";
+            string key = null;
+
+            Assert.ThrowsException<ArgumentNullException>(() => cipher.Decrypt(text, key));
+        }
+
+        [TestMethod]
+        public void DecryptWithLongKey()
+        {
+            string text = "tik";
+            string key = "thiskeylengthmorethentextlength";
+
+            var expected = "abc";
+            var actual = cipher.Decrypt(text, key);
+
+            Assert.AreEqual(expected, actual);
+        }
+        #endregion
     }
 }
