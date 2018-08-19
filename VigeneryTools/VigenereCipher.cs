@@ -15,7 +15,7 @@ namespace VigenereTools
         public VigenereCipher(ICaesarCipher caesar)
         {
             this.caesar = caesar ?? throw new ArgumentNullException(nameof(caesar));
-            alphabet = Enumerable.ToArray(caesar.Alphabet);
+            alphabet = caesar.Alphabet;
         }
 
         public string Decrypt(string text, string key)

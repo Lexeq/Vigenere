@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace VigenereTools
@@ -11,11 +10,11 @@ namespace VigenereTools
 
         private static readonly char[] alphabet = Enumerable.Range('a', AlphabetSize).Select(x => (char)x).ToArray();
 
-        public IReadOnlyCollection<char> Alphabet
+        public char[] Alphabet
         {
             get
             {
-                return Array.AsReadOnly(alphabet);
+                return alphabet.ToArray();
             }
         }
 
@@ -25,7 +24,7 @@ namespace VigenereTools
             {
                 return Encrypt(text, -shift);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

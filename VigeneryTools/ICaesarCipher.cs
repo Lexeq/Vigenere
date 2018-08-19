@@ -4,7 +4,7 @@ namespace VigenereTools
 {
     public interface ICaesarCipher
     {
-        IReadOnlyCollection<char> Alphabet { get; }
+        char[] Alphabet { get; }
 
         string Encrypt(string text, int shift);
 

@@ -9,24 +9,24 @@ namespace VigenereTools
     {
         private char[] alphabet;
 
-        public IReadOnlyCollection<char> Alphabet
+        public char[] Alphabet
         {
             get
             {
-                return Array.AsReadOnly(alphabet);
+                return alphabet.ToArray();
             }
         }
 
-        public CaesarCipher(char[] alphabet)
+        public CaesarCipher(ICollection<char> alphabet)
         {
             if (alphabet == null)
                 throw new ArgumentNullException(nameof(alphabet));
-            if (alphabet.Length < 1)
-                throw new ArgumentException("Alphabes must contain at least one character");
-            if (alphabet.Distinct().Count() != alphabet.Length)
-                throw new ArgumentException("Alphabet must not contain duplicate characters.", nameof(alphabet));
+            if (alphabet.Count < 1)
+                throw new ArgumentException("Alphabes must contains at least one character");
+            if (alphabet.Distinct().Count() != alphabet.Count)
+                throw new ArgumentException("Alphabet must not contains duplicate characters.", nameof(alphabet));
 
-            this.alphabet = alphabet;
+            this.alphabet = alphabet.ToArray();
         }
 
         public string Decrypt(string text, int shift)
