@@ -31,14 +31,7 @@ namespace VigenereTools
 
         public string Decrypt(string text, int shift)
         {
-            try
-            {
-               return Encrypt(text, -shift);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return Encrypt(text, -shift);
         }
 
         public string Encrypt(string text, int shift)

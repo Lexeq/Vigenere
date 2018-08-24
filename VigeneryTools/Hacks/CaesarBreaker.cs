@@ -9,7 +9,7 @@ namespace VigenereTools.Hacks
         #region Static
         private const double DefaultDeviation = 0.06;
 
-        public static CaesarBreaker EnglishBreaker
+        public static CaesarBreaker English
         {
             get
             {
