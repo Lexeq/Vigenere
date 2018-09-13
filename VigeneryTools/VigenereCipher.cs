@@ -32,7 +32,10 @@ namespace VigenereTools
             string[] decrypted = new string[partsCount];
             for (int i = 0; i < parts.Length; i++)
             {
-                decrypted[i] = caesar.Decrypt(parts[i], Array.IndexOf(alphabet, key[i]));
+                int index = Array.IndexOf(alphabet, key[i]);
+                if (index < 0)
+                    throw new CipherException($"Unexpexted char in key: {key[i]}");
+                decrypted[i] = caesar.Decrypt(parts[i], index);
             }
             return decrypted.Merge();
         }
@@ -51,7 +54,10 @@ namespace VigenereTools
             string[] encrypted = new string[partsCounts];
             for (int i = 0; i < parts.Length; i++)
             {
-                encrypted[i] = caesar.Encrypt(parts[i], Array.IndexOf(alphabet, key[i]));
+                int index = Array.IndexOf(alphabet, key[i]);
+                if (index < 0)
+                    throw new CipherException($"Unexpexted char in key: {key[i]}");
+                encrypted[i] = caesar.Encrypt(parts[i], index);
             }
             return encrypted.Merge();
         }
