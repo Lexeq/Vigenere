@@ -6,11 +6,6 @@ namespace VigenereTools.Hacks
 {
     public class VigenereBreaker
     {
-        public static VigenereBreaker English
-        {
-            get { return new VigenereBreaker(new LatinCaesarCipher(), CaesarBreaker.English, 0.0644); }
-        }
-
         private const double DefaultIocDeviation = 0.008;
 
         private readonly double StandartIndexOfCoincidence;
@@ -19,12 +14,17 @@ namespace VigenereTools.Hacks
 
         private ICaesarCipher caesarCipher;
 
-        public double MaxIocDeviation { get; set; } //TODO : check
-
-        public double MaxCaesarDeviation
+        private double iocDeviation;
+        public double MaxIocDeviation
         {
-            get { return caesarBreaker.MaxDeviation; }
-            set { caesarBreaker.MaxDeviation = value; }
+            get => iocDeviation;
+            set
+            {
+                if (value > 0)
+                    iocDeviation = value;
+                else
+                    throw new ArgumentException("Value must be positive.", nameof(MaxIocDeviation));
+            }
         }
 
         private VigenereBreaker(ICaesarCipher cCipher, CaesarBreaker cBreaker, double ioc)
@@ -37,7 +37,7 @@ namespace VigenereTools.Hacks
 
         private int FindKeyLength(string message, int minKeyLength, int maxKeyLength)
         {
-            for (int k = minKeyLength; k < maxKeyLength; k++)
+            for (int k = minKeyLength; k <= maxKeyLength; k++)
             {
                 var ioc = GetIndexOfCoincidence(message, k);
                 if (Math.Abs(StandartIndexOfCoincidence - ioc) <= MaxIocDeviation)
@@ -49,9 +49,6 @@ namespace VigenereTools.Hacks
 
         private double GetIndexOfCoincidence(string text, int keyLength)
         {
-            if (keyLength == 1)
-                return GetIndexOfCoincidence(text);
-
             var parts = text.Split(keyLength);
             return parts.Select(x => GetIndexOfCoincidence(x)).Average();
         }
@@ -68,36 +65,30 @@ namespace VigenereTools.Hacks
             return sum;
         }
 
-        public bool FindKey(string input, out string key)
+        public string FindKey(string input)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-            if (input.Length == 0)
-            {
-                key = "";
-                return true;
-            }
-
-            key = default(string);
-            var keyLength = FindKeyLength(input, 1, input.Length);
-
-            if (keyLength < 0)
-                return false;
-            else
-                return FindKey(input, keyLength, out key);
+            return FindKey(input, 1, (int)Math.Sqrt(input.Length));
         }
 
-        public bool FindKey(string input, int keyLength, out string key)
+        public string FindKey(string input, int minKeyLength, int maxKeyLength)
+        {
+            if (input == null)
+                throw new ArgumentNullException(input);
+            if (minKeyLength < 1)
+                throw new ArgumentException("Value must be positive number", nameof(minKeyLength));
+
+            var kl = FindKeyLength(input, minKeyLength, maxKeyLength);
+            return FindKey(input, kl > 0 ? kl : minKeyLength);
+        }
+
+        public string FindKey(string input, int keyLength)
         {
             if (keyLength < 1)
                 throw new ArgumentException("Value must be positive number", nameof(keyLength));
             if (input == null)
                 throw new ArgumentNullException(input);
             if (input.Length == 0)
-            {
-                key = "";
-                return true;
-            }
+                return string.Empty;
 
             var parts = input.Split(keyLength);
 
@@ -109,8 +100,7 @@ namespace VigenereTools.Hacks
                 var y = caesarCipher.Encrypt(caesarCipher.Alphabet.First().ToString(), offset);
                 builder.Append(y);
             }
-            key = builder.ToString();
-            return true;
+            return builder.ToString();
         }
     }
 }

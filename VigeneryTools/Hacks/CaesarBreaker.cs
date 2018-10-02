@@ -4,47 +4,9 @@ using System.Linq;
 
 namespace VigenereTools.Hacks
 {
-    internal class CaesarBreaker
+    public class CaesarBreaker
     {
-        #region Static
         private const double DefaultDeviation = 0.06;
-
-        public static CaesarBreaker English
-        {
-            get
-            {
-                return new CaesarBreaker(new Dictionary<char, double>()
-                {
-                    {'a', 0.08167},
-                    {'b', 0.01492},
-                    {'c', 0.02782},
-                    {'d', 0.04253},
-                    {'e', 0.12702},
-                    {'f', 0.02228},
-                    {'g', 0.02015},
-                    {'h', 0.06094},
-                    {'i', 0.06966},
-                    {'j', 0.00153},
-                    {'k', 0.00772},
-                    {'l', 0.04025},
-                    {'m', 0.02406},
-                    {'n', 0.06749},
-                    {'o', 0.07507},
-                    {'p', 0.01929},
-                    {'q', 0.00095},
-                    {'r', 0.05987},
-                    {'s', 0.06327},
-                    {'t', 0.09056},
-                    {'u', 0.02758},
-                    {'v', 0.00978},
-                    {'w', 0.02360},
-                    {'x', 0.00150},
-                    {'y', 0.01974},
-                    {'z', 0.00074}
-                });
-            }
-        }
-        #endregion
 
         private readonly IDictionary<char, double> standartFrequency;
 
@@ -58,7 +20,7 @@ namespace VigenereTools.Hacks
                 if (value > 0)
                     maxDeviation = value;
                 else
-                    throw new ArgumentException($"{nameof(MaxDeviation)} value must be positive.");
+                    throw new ArgumentException("Value must be positive.", nameof(MaxDeviation));
             }
         }
 
@@ -70,7 +32,7 @@ namespace VigenereTools.Hacks
             }
         }
 
-        private CaesarBreaker(IDictionary<char, double> frequency)
+        public CaesarBreaker(IDictionary<char, double> frequency)
         {
             standartFrequency = frequency ?? throw new ArgumentNullException(nameof(frequency));
             MaxDeviation = DefaultDeviation;
@@ -84,7 +46,7 @@ namespace VigenereTools.Hacks
             if (text.Length == 0)
                 return 0;
 
-            var alphabetSize = standartFrequency.Keys.Count;
+            var alphabetSize = standartFrequency.Count;
 
             var currentFreq = text.GroupBy(x => x).ToDictionary(x => x.Key, x => x.Count() / (double)text.Length);
             int[] shifts = new int[alphabetSize];
@@ -92,6 +54,9 @@ namespace VigenereTools.Hacks
             {
                 foreach (var current in currentFreq)
                 {
+                    if (!standartFrequency.ContainsKey(current.Key))
+                        throw new CipherException($"Unexpectable character {current.Key}");
+
                     if (Math.Abs(standart.Value - current.Value) < MaxDeviation)
                         shifts[(current.Key - standart.Key + alphabetSize) % alphabetSize]++;
                 }
