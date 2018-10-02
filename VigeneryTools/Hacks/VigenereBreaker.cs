@@ -27,7 +27,7 @@ namespace VigenereTools.Hacks
             }
         }
 
-        private VigenereBreaker(ICaesarCipher cCipher, CaesarBreaker cBreaker, double ioc)
+        public VigenereBreaker(ICaesarCipher cCipher, CaesarBreaker cBreaker, double ioc)
         {
             MaxIocDeviation = DefaultIocDeviation;
             caesarBreaker = cBreaker;
