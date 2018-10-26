@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace VigenereTools.Hacks
 {
+    /// <summary>
+    /// Provides methods for break Vigenere cipher.
+    /// </summary>
     public class VigenereBreaker
     {
         private const double DefaultIocDeviation = 0.008;
@@ -15,6 +19,9 @@ namespace VigenereTools.Hacks
         private ICaesarCipher caesarCipher;
 
         private double iocDeviation;
+
+
+        /// <value> </value>
         public double MaxIocDeviation
         {
             get => iocDeviation;
@@ -27,49 +34,55 @@ namespace VigenereTools.Hacks
             }
         }
 
+        /// <value></value>
+        public double MaxCaesarDeviation
+        {
+            get => caesarBreaker.MaxDeviation;
+            set
+            {
+                if (value > 0)
+                    caesarBreaker.MaxDeviation = value;
+                else
+                    throw new ArgumentException("Value must be positive.", nameof(MaxIocDeviation));
+            }
+        }
+
+        /// <summary>
+        /// Initialize a new instance of <cref="VigenereTools.Hacks.VigenereBreaker"/> class.
+        /// </summary>
+        /// <param name="cCipher"></param>
+        /// <param name="cBreaker"></param>
+        /// <param name="ioc">Index of coincidence</param>
+        /// <exception cref="ArgumentNullException"/>
         public VigenereBreaker(ICaesarCipher cCipher, CaesarBreaker cBreaker, double ioc)
         {
-            MaxIocDeviation = DefaultIocDeviation;
-            caesarBreaker = cBreaker;
-            caesarCipher = cCipher;
+            caesarBreaker = cBreaker ?? throw new ArgumentNullException(nameof(cBreaker));
+            caesarCipher = cCipher ?? throw new ArgumentNullException(nameof(cCipher));
+            if (ioc <= 0)
+                throw new ArgumentException("Value must be positive.", nameof(ioc));
             StandartIndexOfCoincidence = ioc;
+            MaxIocDeviation = DefaultIocDeviation;
         }
 
-        private int FindKeyLength(string message, int minKeyLength, int maxKeyLength)
-        {
-            for (int k = minKeyLength; k <= maxKeyLength; k++)
-            {
-                var ioc = GetIndexOfCoincidence(message, k);
-                if (Math.Abs(StandartIndexOfCoincidence - ioc) <= MaxIocDeviation)
-                    return k;
-            }
-
-            return -1;
-        }
-
-        private double GetIndexOfCoincidence(string text, int keyLength)
-        {
-            var parts = text.Split(keyLength);
-            return parts.Select(x => GetIndexOfCoincidence(x)).Average();
-        }
-
-        private double GetIndexOfCoincidence(string text)
-        {
-            var groups = text.GroupBy(c => c).ToDictionary(g => g.Key, g => g.Count());
-            double sum = 0;
-            foreach (var g in groups)
-            {
-                var count = g.Value;
-                sum += (count * (count - 1d)) / (text.Length * (text.Length - 1d));
-            }
-            return sum;
-        }
-
+        /// <summary>
+        /// Finds most likely keyword.
+        /// </summary>
+        /// <param name="input">Encoded text</param>
+        /// <returns>Probable keyword</returns>
+        /// <exception cref="ArgumentNullException"/>
         public string FindKey(string input)
         {
             return FindKey(input, 1, (int)Math.Sqrt(input.Length));
         }
 
+        /// <summary>
+        /// Finds most likely keyword within specified range of length.
+        /// </summary>
+        /// <param name="input">Encoded text</param>
+        /// <param name="minKeyLength">Included minimal keyword length</param>
+        /// <param name="maxKeyLength">Included maximal keyword length</param>
+        /// <returns>Probable keyword</returns>
+        /// <exception cref="ArgumentNullException"/>
         public string FindKey(string input, int minKeyLength, int maxKeyLength)
         {
             if (input == null)
@@ -81,6 +94,13 @@ namespace VigenereTools.Hacks
             return FindKey(input, kl > 0 ? kl : minKeyLength);
         }
 
+        /// <summary>
+        /// Finds most likely keyword with the specified length.
+        /// </summary>
+        /// <param name="input">Encoded text</param>
+        /// <param name="keyLength">Keyword length</param>
+        /// <returns>Probable keyword</returns>
+        /// <exception cref="ArgumentNullException"/>
         public string FindKey(string input, int keyLength)
         {
             if (keyLength < 1)
@@ -101,6 +121,36 @@ namespace VigenereTools.Hacks
                 builder.Append(y);
             }
             return builder.ToString();
+        }
+
+        private int FindKeyLength(string message, int minKeyLength, int maxKeyLength)
+        {
+            for (int k = minKeyLength; k <= maxKeyLength; k++)
+            {
+                var ioc = CalculateIndexOfCoincidence(message, k);
+                if (Math.Abs(StandartIndexOfCoincidence - ioc) <= MaxIocDeviation)
+                    return k;
+            }
+
+            return -1;
+        }
+
+        private double CalculateIndexOfCoincidence(string text, int keyLength)
+        {
+            var parts = text.Split(keyLength);
+            return parts.Select(x => CalcualteIndexOfCoincidence(x)).Average();
+        }
+
+        private double CalcualteIndexOfCoincidence(string text)
+        {
+            var groups = text.GroupBy(c => c).ToDictionary(g => g.Key, g => g.Count());
+            double sum = 0;
+            foreach (var g in groups)
+            {
+                var count = g.Value;
+                sum += (count * (count - 1d)) / (text.Length * (text.Length - 1d));
+            }
+            return sum;
         }
     }
 }
