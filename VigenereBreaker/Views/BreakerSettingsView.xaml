@@ -28,7 +28,7 @@
                 MaxValue="1"
                 MinValue="0.01"
                 Step="0.01"
-                Value="{Binding CaesarCoefficient, Mode=TwoWay}" />
+                Value="{Binding CaesarCoefficient, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="1" Text="Vigenere Coeff" />
 
@@ -38,13 +38,14 @@
                 MaxValue="1"
                 MinValue="0.001"
                 Step="0.001"
-                Value="{Binding IOC, Mode=TwoWay}" />
+                Value="{Binding IOC, Mode=TwoWay}"/>
 
             <CheckBox
                 Grid.Row="2"
                 VerticalContentAlignment="Center"
-                Content="Manual Key Length"
-                IsChecked="{Binding Manual, Mode=TwoWay}" />
+                Content="Key Length"
+                IsChecked="{Binding Manual, Mode=TwoWay}"
+                ToolTip="Find keyword with specified length"/>
 
             <TextBox
                 Grid.Row="2"
