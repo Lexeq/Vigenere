@@ -44,14 +44,14 @@
                 Grid.Row="2"
                 VerticalContentAlignment="Center"
                 Content="Key Length"
-                IsChecked="{Binding Manual, Mode=TwoWay}"
+                IsChecked="{Binding UseManualKeywordLength, Mode=TwoWay}"
                 ToolTip="Find keyword with specified length"/>
 
             <TextBox
                 Grid.Row="2"
                 Grid.Column="1"
                 HorizontalContentAlignment="Right"
-                Text="{Binding  KeyLength, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                Text="{Binding KeywordLength, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
         </Grid>
     </StackPanel>
 </UserControl>

@@ -176,7 +176,7 @@ namespace VigenereBreaker.ViewModels
             {
                 if (FindKeyWord)
                 {
-                    if (bvm.ManualKeywordLength)
+                    if (bvm.UseManualKeywordLength)
                     {
                         Keyword = Language.VigenereBreaker.FindKey(InputText, bvm.KeywordLength);
                     }

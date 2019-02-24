@@ -14,7 +14,7 @@ namespace VigenereBreaker.ViewModels
         }
 
         private bool manual;
-        public bool ManualKeywordLength
+        public bool UseManualKeywordLength
         {
             get { return manual; }
             set
